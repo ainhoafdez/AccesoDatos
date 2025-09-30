@@ -24,7 +24,7 @@ public class Fichero {
 
         //Añadir la linea al fichero
         String cadena = "";
-        String text = "hola";
+        String texto = "";
         FileWriter fichero = null;
         BufferedWriter escritor = null;
 
@@ -33,7 +33,7 @@ public class Fichero {
             escritor = new BufferedWriter(fichero);
 
             do {
-                escritor.write(text);
+                escritor.write(texto);
                 if (cadena != null) {
                     System.out.println(cadena);
                     escritor.close();

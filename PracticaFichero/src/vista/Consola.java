@@ -1,5 +1,7 @@
 package vista;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Consola {
@@ -32,8 +34,13 @@ public class Consola {
         }
     }
 
-    public static void mostrarMenu(String mensaje) {
+    public static void mostrarMenu(List<String> menu) {
 
-        System.out.println(mensaje);
+        System.out.println("=== MENU ===");
+        for (int i = 0; i < menu.size(); i++) {
+            System.out.println((i + 1) + ". " + menu.get(i));
+        }
+
+        System.out.println("Elige una opción: ");
     }
 }
