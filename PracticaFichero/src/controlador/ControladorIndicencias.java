@@ -1,34 +1,43 @@
 package controlador;
 
-import repositorio.Fichero;
 import servicio.ServicioFichero;
 import vista.Consola;
 import vista.Escaner;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ControladorIndicencias {
 
-    //Pedir usuario
-    public static void iniciar() throws IOException {
-
-        List<String> menu = new ArrayList<>();
+    public static void iniciar() throws Exception {
         String usuario = Escaner.pedirString("Introduce el usuario: ");
 
-        //Mostrar menu
+        List<String> menu = new ArrayList<>();
+        menu.add("Introducir incidencia");
+        menu.add("Buscar incidencia (usuario, fecha o excepción)");
+        menu.add("Salir");
 
-        menu.add("Opción 1 - Introducir datos");
-        menu.add("Opción 2 - Buscar por usuario");
-        menu.add("Opción 3 - Buscar por fecha");
-        menu.add("Opción 4 - Salir");
-        Consola.mostrarMenu(menu);
+        boolean salir = false;
 
-        //Introducir datos(num)
-        //Mostrar excepciones
-        //Buscar
-        //Buscar por usuario
-        //Buscar fecha
+        while (!salir) {
+            Consola.mostrarMenu(menu);
+            int opcion = Escaner.pedirInt("Elige una opción: ");
+
+            switch (opcion) {
+                case 1:
+                    String excepcion = Escaner.pedirString("Introduce la excepción: ");
+                    ServicioFichero.guardar(usuario, excepcion);
+                    break;
+                case 2:
+                    String dato = Escaner.pedirString("Introduce el dato a buscar: ");
+                    ServicioFichero.buscar(dato);
+                    break;
+                case 3:
+                    salir = true;
+                    break;
+                default:
+                    Consola.mostrarString("Opción no válida");
+            }
+        }
     }
 }

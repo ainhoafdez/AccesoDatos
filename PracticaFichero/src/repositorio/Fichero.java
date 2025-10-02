@@ -1,8 +1,8 @@
 package repositorio;
 
 import java.io.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Fichero {
 
@@ -15,92 +15,90 @@ public class Fichero {
                 '}';
     }
 
-    /*
-    entrada y salida
-    metodos para el fichero
-     */
-
+    // Añadir una línea al fichero
     public void addDato(String dato) throws IOException {
-
-        //Añadir la linea al fichero
-        String cadena = "";
-        String texto = "";
         FileWriter fichero = null;
         BufferedWriter escritor = null;
 
         try {
-            fichero = new FileWriter("datos/incidencias.txt", true);
+            fichero = new FileWriter(ruta, true); // append = true
             escritor = new BufferedWriter(fichero);
 
-            do {
-                escritor.write(texto);
-                if (cadena != null) {
-                    System.out.println(cadena);
-                    escritor.close();
-                }
-            } while (cadena != null);
+            escritor.write(dato);
+            escritor.newLine();
+
         } catch (IOException e) {
             System.err.println("No encuentro el fichero");
         } finally {
-            if (cadena != null) {
-                fichero.close();
+            try {
+                if (escritor != null) {
+                    escritor.close();
+                }
+                if (fichero != null) {
+                    fichero.close();
+                }
+            } catch (IOException e) {
+                System.err.println("Error al cerrar el fichero");
             }
         }
     }
 
-    public String buscarDato(String dato) throws IOException {
+    // Buscar coincidencias en cualquier campo
+    public List<String> buscarDato(String dato) throws IOException {
 
         String cadena = "";
-
         FileReader fichero = null;
         BufferedReader lector = null;
+        List<String> resultados = new ArrayList<>();
 
         try {
-            fichero = new FileReader("datos/incidencias.txt");
+            fichero = new FileReader(ruta);
             lector = new BufferedReader(fichero);
 
             do {
                 cadena = lector.readLine();
+
                 if (cadena != null) {
-                    String[] datos = cadena.split(";");
-                    System.out.println(datos);
+                    String[] campos = cadena.split(";");
+                    boolean encontrada = false; // evita duplicar la misma línea
+                    for (String campo : campos) {
+                        if (campo.equalsIgnoreCase(dato)) {
+                            if (!encontrada) {
+                                resultados.add(cadena);
+                                encontrada = true;
+                            }
+                        }
+                    }
                 }
             } while (cadena != null);
 
         } catch (FileNotFoundException e) {
             System.err.println("No encuentro el fichero");
+
         } catch (IOException e) {
             System.err.println("Error de lectura");
+
         } catch (Exception e) {
             System.err.println("Error de fichero");
+
         } finally {
+
             try {
-                if (lector == null) {
-                    lector.close();
-                }
                 if (lector != null) {
                     lector.close();
                 }
-
+                if (fichero != null) {
+                    fichero.close();
+                }
             } catch (IOException e) {
-                System.err.println("Error de lectura");
+                System.err.println("Error al cerrar el fichero");
             }
         }
-        return "";
-    }
 
-    public String buscarDato(String dato, int columna) {
-
-        return "";
-    }
-
-    public String buscarFecha(LocalDate fecha_final) {
-
-        return "";
+        return resultados;
     }
 
     public ArrayList<String> leerFichero(String dato) {
-
         return null;
     }
 

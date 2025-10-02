@@ -1,31 +1,29 @@
 package vista;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Escaner {
 
-    private static Scanner sc = new Scanner(System.in);
+    private static final Scanner sc = new Scanner(System.in);
 
-    public static String pedirString(String dato) throws IOException {
-
-        Consola.leerString(dato);
-        dato = sc.nextLine();
-
-        return dato;
+    // Pedir un texto
+    public static String pedirString(String mensaje) {
+        System.out.print(mensaje);
+        return sc.nextLine();
     }
 
-    public static int pedirInt(int dato) throws IOException {
-
-        Consola.leerInt(String.valueOf(dato));
-        int valor = -1;
-        try {
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    // Pedir un número entero
+    public static int pedirInt(String mensaje) {
+        while (true) {
+            System.out.print(mensaje);
+            if (sc.hasNextInt()) {
+                int num = sc.nextInt();
+                sc.nextLine(); // limpiar el salto de línea pendiente
+                return num;
+            } else {
+                System.out.println("Error: número inválido.");
+                sc.nextLine(); // limpiar el input incorrecto
+            }
         }
-        dato = sc.nextInt();
-
-        return dato;
     }
 }
